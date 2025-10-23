@@ -1,51 +1,80 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Bai1 from "./components/Bai1";
-import Bai2 from "./components/Bai2";
-import Bai3 from "./components/Bai3";
+import { Routes, Route } from "react-router-dom"
+import Navbar from "./components/Navbar"
+import PostList from "./components/PostList"
+import PostDetail from "./components/PostDetail"
+import PostForm from "./components/PostForm"
+import { useState } from "react"
 
-function App() {
-  const styles = {
-    header: {
-      backgroundColor: "#007bff",
-      padding: "10px",
-      display: "flex",
-      justifyContent: "flex-start",
-      alignItems: "center",
-      gap: "15px",
-    },
-    link: {
-      color: "white",
-      textDecoration: "none",
-      
-      padding: "8px 16px",
-      borderRadius: "5px",
-    },
-    container: { padding: "20px", fontFamily: "Arial, sans-serif" },
-  };
-
-  return (
-    <Router>
-      <div>
-        <header style={styles.header}>
-          <Link to="/" style={styles.link}>Trang chủ</Link>
-          <Link to="/bai1" style={styles.link}>Bài 1</Link>
-          <Link to="/bai2" style={styles.link}>Bài 2</Link>
-          <Link to="/bai3" style={styles.link}>Bài 3</Link>
-        </header>
-
-        <main style={styles.container}>
-          <Routes>
-            <Route path="/" element={<h2>Thực hành </h2>} />
-            <Route path="/bai1/*" element={<Bai1 />} />
-            <Route path="/bai2/*" element={<Bai2 />} />
-            <Route path="/bai3/*" element={<Bai3 />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
-  );
+export interface Post {
+  id: number
+  title: string
+  author: string
+  thumbnail: string
+  content: string
+  category: string
+  date: string
 }
 
-export default App;
+function App() {
+  const [posts, setPosts] = useState<Post[]>([
+    {
+      id: 1,
+      title: "Công nghệ AI và tương lai",
+      author: "Nguyễn Văn A",
+      thumbnail: "https://picsum.photos/300?1",
+      content: "Trí tuệ nhân tạo đang thay đổi thế giới nhanh chóng...",
+      category: "Công nghệ",
+      date: "2025-10-20"
+    },
+    {
+      id: 2,
+      title: "Khám phá ẩm thực Nhật Bản",
+      author: "Lê Thị B",
+      thumbnail: "https://picsum.photos/300?2",
+      content: "Ẩm thực Nhật Bản nổi tiếng với sự tinh tế và phong phú...",
+      category: "Ẩm thực",
+      date: "2025-10-19"
+    },
+    {
+      id: 3,
+      title: "Kinh nghiệm du lịch Đà Lạt",
+      author: "Phạm Văn C",
+      thumbnail: "https://picsum.photos/300?3",
+      content: "Đà Lạt luôn là điểm đến hấp dẫn với khí hậu mát mẻ...",
+      category: "Du lịch",
+      date: "2025-10-18"
+    },
+    {
+      id: 4,
+      title: "Cuộc sống xanh giữa lòng thành phố",
+      author: "Trần Thị D",
+      thumbnail: "https://picsum.photos/300?4",
+      content: "Lối sống xanh giúp bảo vệ môi trường và nâng cao sức khỏe...",
+      category: "Đời sống",
+      date: "2025-10-17"
+    },
+    {
+      id: 5,
+      title: "Công nghệ 5G và tác động đến xã hội",
+      author: "Ngô Văn E",
+      thumbnail: "https://picsum.photos/300?5",
+      content: "Mạng 5G đang mở ra nhiều cơ hội mới cho nền kinh tế số...",
+      category: "Công nghệ",
+      date: "2025-10-16"
+    }
+  ])
 
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<PostList posts={posts} setPosts={setPosts} />} />
+        <Route path="/create" element={<PostForm posts={posts} setPosts={setPosts} />} />
+        <Route path="/posts/:id" element={<PostDetail posts={posts} setPosts={setPosts} />} />
+        <Route path="/posts/edit/:id" element={<PostForm posts={posts} setPosts={setPosts} isEdit />} />
+      </Routes>
+    </>
+  )
+}
+
+export default App
